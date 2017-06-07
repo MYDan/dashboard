@@ -17,22 +17,13 @@
 
               <p>
               token是用于标识用户，请不要提供给他人。设置了token后的client端将能控制该用户机器列表中的机器。<br><br>
-              使用方式:<br>
 
-              [% IF token %]
-       
-              &nbsp;&nbsp;&nbsp;&nbsp;echo '[% token %]' > /data/scripts/mydan/ns/.token<br>
-              [% ELSE %]
-              &nbsp;&nbsp;&nbsp;&nbsp;1. <a href="/user/settings/?token=add">创建</a>token<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;2. 把token写入配置文件 /data/scripts/mydan/ns/.token
-              [% END %]
-              <br><br>
+              <form action="#" method="post" >
+                  <textarea rows="9" cols="120" name="token" >[% token %]</textarea> 
+                  <br>
+                  <input type="submit">
+              </form>
 
-             [% IF token %]
-              <a href="/user/settings/?token=add">重置</a>
-              <a href="/user/settings/?token=del">删除</a>
-             [% END %]
-              </p>
             </li>
 
           </ol>

@@ -2,6 +2,7 @@ package user;
 use Dancer ':syntax';
 use JSON;
 
+use Tie::File;
 use dashboard;
 our $VERSION = '0.1';
 
@@ -32,20 +33,11 @@ sub maketoken
 any '/user/settings/' => sub {
     my $param = params();
     my $username = get_username();
-    my $tokenctrl = $param->{token} ||'';
-    my $e;
-    if( $tokenctrl eq 'add' )
-    {
-        $e = sprintf "replace into rel_user_token (`user`,`token`) values('$username','%s')", maketoken();
-    }
-    elsif( $tokenctrl eq 'del' )
-    {
-        $e = "delete from rel_user_token where user='$username'";
-    }
+    die "tie keys $username fail" unless tie my @token, 'Tie::File', "$RealBin/../../etc/dashboard/keys/$username";
 
-    dashboard::execute( $e ) if $e;
-    my $res = dashboard::query( "select token from rel_user_token where user='$username'");
-    my $token = $res->[0][0] if $res && $res->[0] && $res->[0][0];
+    @token = ( $param->{token} ) if $param->{token};
+
+    my $token = join "\n", @token;
     template 'user/settings', +{ username => $username, token => $token };
 };
 
