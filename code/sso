@@ -1,0 +1,9 @@
+#!# perl: code/sso
+use strict;
+use warnings;
+
+return sub
+{
+    return 'nobody@mydan.org';
+};
+

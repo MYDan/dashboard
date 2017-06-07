@@ -1,0 +1,19 @@
+#!# perl: code/node
+use strict;
+use warnings;
+use YAML::XS;
+
+BEGIN{
+    use FindBin qw( $RealBin );
+    use lib "$RealBin/../lib";
+};
+use Node;
+
+my $node = Node->new( path => "$RealBin/../../etc/dashboard/node" );
+
+return sub
+{
+    die "username undef" unless my $username = shift;
+    return $node->nodes( $username );
+};
+

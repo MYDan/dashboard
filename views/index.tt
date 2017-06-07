@@ -1,0 +1,69 @@
+<div id="page">
+      <div id="sidebar">
+        <ul id="sidebar-items">
+         
+          <li>
+            <h3>HELP</h3>
+
+            <ul class="links">
+              <li><a href="http://www.mydan.org" target="_blank" >docs</a></li>
+              <li><a href="/download/">download</a></li>
+            </ul>
+          </li>
+         
+          <li>
+            <h3>USER</h3>
+
+            <ul class="links">
+              <li><a href="/user/settings/">Settings</a></li>
+              <li><a href="/user/myhost/">MyHost</a></li>
+            </ul>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div id="content">
+        <div id="header">
+          <h1>MYDan</h1>
+          <h2>You&rsquo;ve joined the mydan floor!</h2>
+        </div>
+
+        <div id="getting-started">
+          <h1>简述</h1>
+          <h2>mydan是一个运维工具集,可以方便的管理服务器。mydan分为三个角色，dashboard、agent、client</h2>
+                    
+          <ol>          
+            <li>
+              <h2>dashboard</h2>
+              <p>
+              </p>
+            </li>
+
+            <li>
+              <h2>agent</h2>
+
+              <p>
+              Your application is configured via a global configuration file,
+              <tt>config.yml</tt> and an "environment" configuration file,
+              <tt>environments/development.yml</tt>. Edit those files if you
+              want to change the settings of your application.
+              </p>
+            </li>
+
+            <li>
+              <h2>client</h2>
+
+              <p>
+              The default route that displays this page can be removed,
+              it's just here to help you get started. The template used to
+              generate this content is located in 
+              <code>views/index.tt</code>.
+              You can add some routes to <tt>lib/dashboard.pm</tt>. 
+              </p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>

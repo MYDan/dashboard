@@ -1,0 +1,26 @@
+<div id="page">
+      <div id="sidebar">
+        <ul id="sidebar-items">
+          <li><a href="/">返回首页</a></li>
+        </ul>
+
+      </div>
+
+      <div id="content">
+          <h2>用户设置</h2>
+        <div id="getting-started">
+          <h2>[% username %]</h2>
+                    
+          <ol>          
+              <h2>机器列表([% count %]):</h2>
+
+              <p>
+              [% FOR host IN myhost %]
+              [% host %]<br>
+              [% END %]
+              </p>
+
+          </ol>
+        </div>
+      </div>
+    </div>
