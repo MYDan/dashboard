@@ -52,7 +52,8 @@ any '/user/settings/' => sub {
 any '/user/myhost/' => sub {
     my $param = params();
     my $username = get_username();
-    my @myhost = &{$code{node}}( $username );
+    my $data = &{$code{node}}( $username );
+    my @myhost = map{ sprintf "%s:%s", $_, join ',', keys %{$data->{$_}} }keys %$data;
     template 'user/myhost', +{ username => $username, myhost => \@myhost, count => scalar @myhost };
 };
 

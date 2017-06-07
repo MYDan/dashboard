@@ -2,11 +2,12 @@
 use strict;
 use warnings;
 
+use YAML::XS;
 use MYDan::Util::OptConf;
 
 =head1 SYNOPSIS
 
- $0 [--user username] [--add||--del] [--node 10.10.1.1]
+ $0 [--user username] [--add work||--del root] [--node 10.10.1.1]
     
 =cut
 
@@ -17,20 +18,20 @@ BEGIN{
 use Node;
 
 my $option = MYDan::Util::OptConf->load();
-my %o = $option->get( qw( user=s add del node=s ) )->dump();
+my %o = $option->get( qw( user=s add=s del=s node=s ) )->dump();
 #$option->assert(qw( script package output ));
 
 my $node = Node->new( path => "$RealBin/../../etc/dashboard/node" );
 
 unless( $o{user} )
 {
-    map{ print "$_\n" }$node->users();
+    YAML::XS::DumpFile \*STDOUT, $node->users();
     exit;
 }
 
 unless( $o{add} || $o{del} )
 {
-    map{ print "$_\n" }$node->nodes( $o{user} );
+    YAML::XS::DumpFile \*STDOUT, $node->nodes( $o{user} );
     exit;
 }
 
@@ -46,4 +47,4 @@ unless( $o{node} )
     }
 }
 
-$o{add} ? $node->add( $o{user}  => \@node ) : $node->del( $o{user} => \@node );
+$o{add} ? $node->add( $o{user}  => \@node, $o{add} ) : $node->del( $o{user} => \@node, $o{del} );

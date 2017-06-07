@@ -13,44 +13,63 @@ sub new
     my ( $class, %this ) = @_;
     die "path undef." unless $this{path};
     system( "mkdir -p '$this{path}'" ) unless -d $this{path};
+    system( "touch '$this{path}/current'" ) unless -e "$this{path}/current";
     bless \%this, ref $class || $class;
 }
 
 sub add
 {
-    my ( $this, $user, $node ) = @_;
+    my ( $this, $user, $node, $name ) = @_;
 
-    my %node = map{ $_ => 1 }$this->nodes( $user );
+    my $data = $this->_data();
 
-    map{ $node{$_} ++ }@$node; 
-    $this->nodes( $user, [ keys %node ] );
+    map{ $data->{$user}{$_}{$name} = 1 }@$node;
+    my $file = sprintf "data.%s", POSIX::strftime( "%F_%T", localtime );
+    eval{ YAML::XS::DumpFile "$this->{path}/$file", $data; };
+    system "ln -fsn '$file' '$this->{path}/current'";
+
     return $this;
 }
 
 sub del
 {
-    my ( $this, $user, $node ) = @_;
+    my ( $this, $user, $node, $name ) = @_;
 
-    my %node = map{ $_ => 1 }$this->nodes( $user );
+    my $data = $this->_data();
+    map{ 
+        delete $data->{$user}{$_}{$name};
+        delete $data->{$user}{$_} unless keys %{$data->{$user}{$_}};
 
-    map{ delete $node{$_} }@$node; 
-    $this->nodes( $user, [ keys %node ] );
+    }@$node;
+
+    my $file = sprintf "data.%s", POSIX::strftime( "%F_%T", localtime );
+    eval{ YAML::XS::DumpFile "$this->{path}/$file", $data; };
+    system "ln -fsn '$file' '$this->{path}/current'";
+
     return $this;
 }
 
 sub users
 {
-    my $this = shift;
-    return map{ basename $_ }glob "$this->{path}/*";
+    my $data = shift->_data();
+    return [ keys %$data ];
 }
 
 sub nodes
 {
-    my ( $this, $user, $node ) = @_;
-    die "user format error" unless $user =~ /^[a-zA-Z0-9\.\-\@_]+$/;
-    die "tie fail: $!\n" unless tie my @nodes, 'Tie::File', "$this->{path}/$user";
-    @nodes = grep{ /\w/ }@$node if $node;
-    return @nodes;
+    my ( $this, $user ) = @_;
+    my $data = $this->_data();
+    return $data->{$user};
 }
+
+
+sub _data
+{
+    my $this = shift;
+    my $data = eval{  YAML::XS::LoadFile "$this->{path}/current" };
+    die "load $this->{path}/current fail:$@" if $@;
+    return $data;
+}
+
 
 1;
