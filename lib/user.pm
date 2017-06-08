@@ -33,7 +33,9 @@ sub maketoken
 any '/user/settings/' => sub {
     my $param = params();
     my $username = get_username();
-    die "tie keys $username fail" unless tie my @token, 'Tie::File', "$RealBin/../../etc/dashboard/keys/$username";
+    my $p = "$RealBin/../../etc/dashboard/keys";
+    system "mkdir -p '$p'" unless -e $p;
+    die "tie keys $username fail" unless tie my @token, 'Tie::File', "$p/$username";
 
     @token = ( $param->{token} ) if $param->{token};
 

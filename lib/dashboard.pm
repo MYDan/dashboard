@@ -34,9 +34,8 @@ get '/' => sub {
     template 'index';
 };
 
-any '/mon' => sub {
-     eval{ query( sprintf "select count(*) from rel_host_ip_cdn" )};
-     return $@ ? "ERR:$@" : "ok";
+any '/health' => sub {
+     return 'ok';
 };
 
 any '/test' => sub {
