@@ -1,0 +1,50 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use YAML::XS;
+use MYDan::Util::OptConf;
+
+=head1 SYNOPSIS
+
+ $0 [--user username] [--add work||--del root] [--access 10.10.1.1]
+    
+=cut
+
+BEGIN{
+    use FindBin qw( $RealBin );
+    use lib "$RealBin/../lib";
+};
+use Access;
+
+my $option = MYDan::Util::OptConf->load();
+my %o = $option->get( qw( user=s add=s del=s access=s ) )->dump();
+#$option->assert(qw( script package output ));
+
+my $access = Access->new( path => "$RealBin/../../etc/dashboard/access" );
+
+unless( $o{user} )
+{
+    YAML::XS::DumpFile \*STDOUT, $access->users();
+    exit;
+}
+
+unless( $o{add} || $o{del} )
+{
+    YAML::XS::DumpFile \*STDOUT, $access->accesss( $o{user} );
+    exit;
+}
+
+
+my @access = ( $o{access} ) if $o{access};
+
+unless( $o{access} )
+{
+    while( <STDIN> )
+    {
+        chomp $_;
+        push @access, $_;
+    }
+}
+
+$o{add} ? $access->add( $o{user}  => \@access, $o{add} ) : $access->del( $o{user} => \@access, $o{del} );

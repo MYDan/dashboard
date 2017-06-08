@@ -1,4 +1,4 @@
-#!# perl: code/node
+#!# perl: code/access
 use strict;
 use warnings;
 use YAML::XS;
@@ -7,13 +7,13 @@ BEGIN{
     use FindBin qw( $RealBin );
     use lib "$RealBin/../lib";
 };
-use Node;
+use Access;
 
-my $node = Node->new( path => "$RealBin/../../etc/dashboard/node" );
+my $access = Access->new( path => "$RealBin/../../etc/dashboard/access" );
 
 return sub
 {
     die "username undef" unless my $username = shift;
-    return $node->nodes( $username );
+    return $access->accesss( $username );
 };
 

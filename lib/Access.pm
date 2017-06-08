@@ -1,4 +1,4 @@
-package Node;
+package Access;
 use strict;
 use warnings;
 use Carp;
@@ -19,11 +19,11 @@ sub new
 
 sub add
 {
-    my ( $this, $user, $node, $name ) = @_;
+    my ( $this, $user, $access, $name ) = @_;
 
     my $data = $this->_data();
 
-    map{ $data->{$user}{$_}{$name} = 1 }@$node;
+    map{ $data->{$user}{$_}{$name} = 1 }@$access;
     my $file = sprintf "data.%s", POSIX::strftime( "%F_%T", localtime );
     eval{ YAML::XS::DumpFile "$this->{path}/$file", $data; };
     system "ln -fsn '$file' '$this->{path}/current'";
@@ -33,14 +33,14 @@ sub add
 
 sub del
 {
-    my ( $this, $user, $node, $name ) = @_;
+    my ( $this, $user, $access, $name ) = @_;
 
     my $data = $this->_data();
     map{ 
         delete $data->{$user}{$_}{$name};
         delete $data->{$user}{$_} unless keys %{$data->{$user}{$_}};
 
-    }@$node;
+    }@$access;
 
     my $file = sprintf "data.%s", POSIX::strftime( "%F_%T", localtime );
     eval{ YAML::XS::DumpFile "$this->{path}/$file", $data; };
@@ -55,7 +55,7 @@ sub users
     return [ keys %$data ];
 }
 
-sub nodes
+sub accesss
 {
     my ( $this, $user ) = @_;
     my $data = $this->_data();

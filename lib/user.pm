@@ -14,7 +14,7 @@ BEGIN{
         my $code = do "$RealBin/../code/$_";
         die "code/$_ no CODE" unless ref $code eq 'CODE';
         $code{$_} = $code;
-    }qw( node sso );
+    }qw( access sso );
 };
 sub get_username
 {
@@ -44,7 +44,7 @@ any '/user/settings/' => sub {
 any '/user/myhost/' => sub {
     my $param = params();
     my $username = get_username();
-    my $data = &{$code{node}}( $username );
+    my $data = &{$code{access}}( $username );
     my @myhost = map{ sprintf "%s:%s", $_, join ',', keys %{$data->{$_}} }keys %$data;
     template 'user/myhost', +{ username => $username, myhost => \@myhost, count => scalar @myhost };
 };
