@@ -8,6 +8,7 @@
             <ul class="links">
               <li><a href="http://www.mydan.org" target="_blank" >docs</a></li>
               <li><a href="/download/">download</a></li>
+              <li><a href="/install/">install</a></li>
             </ul>
           </li>
          
@@ -25,42 +26,19 @@
       </div>
 
       <div id="content">
-        <div id="header">
           <h1>MYDan</h1>
-          <h2>You&rsquo;ve joined the mydan floor!</h2>
-        </div>
 
         <div id="getting-started">
           <h1>简述</h1>
-          <h2>mydan是一个运维工具集,可以方便的管理服务器。mydan分为三个角色，dashboard、agent、client</h2>
+          <h2>蚂蚁蛋运维助手详情请查到<a href="http://www.mydan.org" target="_blank" >www.mydan.org</a>查看</h2>
                     
           <ol>          
             <li>
-              <h2>dashboard</h2>
-              <p>
-              </p>
-            </li>
-
-            <li>
-              <h2>agent</h2>
+              <h2>agent & client </h2>
 
               <p>
-              Your application is configured via a global configuration file,
-              <tt>config.yml</tt> and an "environment" configuration file,
-              <tt>environments/development.yml</tt>. Edit those files if you
-              want to change the settings of your application.
-              </p>
-            </li>
-
-            <li>
-              <h2>client</h2>
-
-              <p>
-              The default route that displays this page can be removed,
-              it's just here to help you get started. The template used to
-              generate this content is located in 
-              <code>views/index.tt</code>.
-              You can add some routes to <tt>lib/dashboard.pm</tt>. 
+              如果你能看到这个页面，说明当前选用的是mydan的全量模式。agent和client需要在该dashboard中运行安装命令来完成客户端的安装。<br>
+              
               </p>
             </li>
           </ol>

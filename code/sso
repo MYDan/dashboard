@@ -4,6 +4,6 @@ use warnings;
 
 return sub
 {
-    return 'nobody@mydan.org';
+    return 'nobody';
 };
 

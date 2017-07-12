@@ -1,4 +1,0 @@
-#!/usr/bin/env perl
-use MYDan::VSSH;
-
-print "exec\n"

@@ -29,7 +29,7 @@ engines:
 # For session support enable the following line and see Dancer::Session
 # session: "YAML"
 
-serveraddr: 'http://dashboard.mydan.org:9999'
+serveraddr: 'http://dashboard.mydan.org:3333'
 ssocallback: 'http://sso.mydan.org/login?callback='
 cookiekey: 'sid'
 #

@@ -10,6 +10,9 @@
           <h2>下载</h2>
         <div id="getting-started">
           <h2>[% username %]</h2>
+
+          可用通过下载数据包进行手动解压安装，也可用到<a href="/install/">安装页面</a>获取脚本安装。<br>
+
           <ol>          
 
 
@@ -18,7 +21,6 @@
               <h2>[% t %]</h2>
 
               <p>
-              请在个人电脑安装,安装后<a href="/user/settings/">设置token</a>，便可以控制<a href="/user/myhost/">服务器</a><br><br>
               下载地址:<br>
               [% FOR al in download.$t %]
                   <a href="/download/agent/[% t %]/[% al %]">[% al %]</a><br>

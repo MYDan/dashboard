@@ -1,0 +1,20 @@
+<div id="page">
+      <div id="sidebar">
+        <ul id="sidebar-items">
+          <li><a href="/">返回首页</a></li>
+        </ul>
+
+      </div>
+
+      <div id="content">
+         <h2>安装</h2>
+        <div id="getting-started">
+          请到需要安装本地化mydan的机器上运行下面命令。<br>
+          如果链接无法请求，或者安装过程中没有找到合适本系统的版本，请联系管理员修改配置或者添加发布版本。<br>
+          如是其他问题，请到<a href="http://www.mydan.org/" target="_blank" >MYDan官网</a>寻求帮助。<br><br>
+
+          curl -fsSL [% serveraddr %]/install/script.sh|bash -x<br>
+
+        </div>
+      </div>
+    </div>
