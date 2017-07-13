@@ -13,8 +13,14 @@
           如果链接无法请求，或者安装过程中没有找到合适本系统的版本，请联系管理员修改配置或者添加发布版本。<br>
           如是其他问题，请到<a href="http://www.mydan.org/" target="_blank" >MYDan官网</a>寻求帮助。<br><br>
 
-          curl -fsSL [% serveraddr %]/install/script.sh|bash -x<br>
+          安装client:<br>
+          curl -fsSL [% serveraddr %]/install/script/client.sh|bash -x<br><br>
 
+
+          安装agent:<br>
+          curl -fsSL [% serveraddr %]/install/script/agent.sh|bash -x<br><br>
+
+          注：client和agent的区别是，agent会启动agent服务和添加公钥，安装后就能被调用，client则不会<br>
         </div>
       </div>
     </div>

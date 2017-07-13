@@ -1,0 +1,6 @@
+*.swp
+code
+tools
+cc.i
+bin
+*.old

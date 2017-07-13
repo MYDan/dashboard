@@ -56,8 +56,12 @@ mysystem "rsync -a cc/ cc.i/";
 repl( 'cc.i' );
 mysystem "rsync -a cc.i/ ./";
 
-map{ chomp $_ }my @m = `cat Makefile.PL |grep -P '=>\\s+\\d.*'|awk '{print \$1}'`;
-insl( @m );   
+my %m;
+tie my ( @file ), 'Tie::File', 'Makefile.PL';
+map{ $m{$1} = 1 if $_ =~ /\s+'?([:\w]+)'? => [\d\.]+/ }@file;
+untie @file;
+
+insl( keys %m );   
 
 system 'touch ok';
 exit 0;

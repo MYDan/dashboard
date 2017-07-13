@@ -20,6 +20,7 @@ our %PREREQ_PM =
     'Crypt::PK::RSA' => 0,
     'Template' => 0,
     'Dancer::Plugin::Database' => 0,
+    'Twiggy' => 0,
 );
 
 WriteMakefile
@@ -30,6 +31,6 @@ WriteMakefile
     ABSTRACT            => 'MYDan dashboard',
     PREREQ_PM     => \%PREREQ_PM, 
     dist          => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => [ 'dashboard-*', 'cc.i', 'ok' ]},
+    clean               => { FILES => [ 'dashboard-*', 'cc.i', 'ok', 'bin', 'tools' ]},
     ( $ExtUtils::MakeMaker::VERSION >= 6.3002 ? ( LICENSE => 'perl' ) : () ),
 );

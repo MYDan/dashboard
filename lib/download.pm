@@ -11,7 +11,7 @@ any '/download/' => sub {
     my %download;
     map{ push @{$download{$1}}, $2 if $_ =~ /\/([^\/]+)\/([^\/]+)$/ }glob "$RealBin/../public/download/agent/*/*";
 
-    template 'download', +{ download => \%download,  serveraddr => config->{serveraddr} };
+    template 'download', +{ download => \%download };
 };
 
 true;

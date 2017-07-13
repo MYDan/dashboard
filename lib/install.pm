@@ -9,23 +9,22 @@ our $VERSION = '0.1';
 
 any '/install/' => sub {
     my $param = params();
-
-    template 'install', +{ serveraddr => config->{serveraddr} };
+    template 'install', +{ serveraddr => "http://".request->{host} };
 };
 
+my $install_script_agent;
+any '/install/script/agent.sh' => sub {
 
-my $install_script;
-any '/install/script.sh' => sub {
-
-    unless( $install_script )
+    unless( $install_script_agent )
     {
-        $install_script = 
+        $install_script_agent = 
 '#!/bin/bash
 test -e /etc/mydan.lock && exit 1;
 TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
 wget -O $TMP ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
 tar -zxvf $TMP -C / || exit 1
+rsync -av MYDanROOT/etc/agent/auth.tmp/ MYDanROOT/etc/agent/auth/ || exit
 MYDanROOT/dan/bootstrap/bin/bootstrap --install || exit 1
 #ServerAddr
 #MYDanROOT
@@ -43,17 +42,45 @@ MYDanROOT/dan/bootstrap/bin/bootstrap --install || exit 1
 #
 echo OK
 ';
-
-        my %reg = ( ServerAddr => config->{serveraddr}, MYDanROOT => $MYDan::PATH );
+        my %reg = ( MYDanROOT => $MYDan::PATH );
         while( my( $k, $v ) = each %reg )
         {
-            $install_script =~ s/$k/$v/g;
+            $install_script_agent  =~ s/$k/$v/g;
         }
     }
+
+    my $ServerAddr = 'http://'.request->{host};
+    my $tmp = $install_script_agent; $tmp =~ s/ServerAddr/$ServerAddr/g;
     
-    return $install_script;
+    return $tmp;
 };
 
+my $install_script_client;
+any '/install/script/client.sh' => sub {
+
+    unless( $install_script_client )
+    {
+        $install_script_client = 
+'#!/bin/bash
+test -e /etc/mydan.lock && exit 1;
+TMP=/tmp/mydan.install.tar.gz;
+ARCH=$(uname).$(uname -m);
+wget -O $TMP ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
+tar -zxvf $TMP -C / || exit 1
+echo OK
+';
+        my %reg = ( MYDanROOT => $MYDan::PATH );
+        while( my( $k, $v ) = each %reg )
+        {
+            $install_script_client =~ s/$k/$v/g;
+        }
+    }
+
+    my $ServerAddr = 'http://'.request->{host};
+    my $tmp = $install_script_client; $tmp =~ s/ServerAddr/$ServerAddr/g;
+    
+    return $tmp;
+};
 
 true;
  

@@ -18,8 +18,8 @@ BEGIN{
 };
 sub get_username
 {
-    my $callback = sprintf "%s%s%s", config->{ssocallback}, config->{serveraddr},request->{path};
-    my $username = &{$code{sso}}( config->{cookiekey} );
+    my $callback = sprintf "%s%s%s", config->{ssocallback}, "http://".request->{host},request->{path};
+    my $username = &{$code{sso}}( cookie( config->{cookiekey} ) );
     redirect $callback unless $username;
     return $username;
 }
@@ -32,7 +32,7 @@ sub maketoken
 
 any '/user/settings/' => sub {
     my $param = params();
-    my $username = get_username();
+    return unless my $username = get_username();
     my $p = "$RealBin/../../etc/dashboard/auth";
     system "mkdir -p '$p'" unless -e $p;
     die "tie auth $username fail" unless tie my @token, 'Tie::File', "$p/$username.pub";
@@ -45,7 +45,7 @@ any '/user/settings/' => sub {
 
 any '/user/myhost/' => sub {
     my $param = params();
-    my $username = get_username();
+    return unless my $username = get_username();
     my $data = &{$code{access}}( $username );
     my @myhost = map{ sprintf "%s:%s", $_, join ',', keys %{$data->{$_}} }keys %$data;
     template 'user/myhost', +{ username => $username, myhost => \@myhost, count => scalar @myhost };
