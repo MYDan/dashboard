@@ -4,3 +4,4 @@ tools
 cc.i
 bin
 *.old
+logs
