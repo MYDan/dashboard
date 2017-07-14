@@ -22,10 +22,14 @@ any '/install/script/agent.sh' => sub {
 test -e /etc/mydan.lock && exit 1;
 TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
-wget -O $TMP ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
+wget -O $TMP http://ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
 tar -zxvf $TMP -C / || exit 1
 rsync -av MYDanROOT/etc/agent/auth.tmp/ MYDanROOT/etc/agent/auth/ || exit
+rsync -av MYDanROOT/dan/bootstrap/exec.tmp/agent MYDanROOT//dan/bootstrap/exec/agent || exit
 MYDanROOT/dan/bootstrap/bin/bootstrap --install || exit 1
+sed -i "s/.*#myrole/  role: agent#myrole/" MYDanROOT/dan/.config || exit 1
+
+sed -i "s/.*#dashboard_addr/  addr: http:\/\/ServerAddr #dashboard_addr/" MYDanROOT/dan/.config || exit 1
 #ServerAddr
 #MYDanROOT
 #AgentPort
@@ -49,7 +53,7 @@ echo OK
         }
     }
 
-    my $ServerAddr = 'http://'.request->{host};
+    my $ServerAddr = request->{host};
     my $tmp = $install_script_agent; $tmp =~ s/ServerAddr/$ServerAddr/g;
     
     return $tmp;
@@ -65,8 +69,10 @@ any '/install/script/client.sh' => sub {
 test -e /etc/mydan.lock && exit 1;
 TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
-wget -O $TMP ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
+wget -O $TMP http://ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
 tar -zxvf $TMP -C / || exit 1
+sed -i "s/.*#myrole/  role: client#myrole/" MYDanROOT/dan/.config || exit 1
+sed -i "s/.*#dashboard_addr/  addr: http:\/\/ServerAddr #dashboard_addr/" MYDanROOT/dan/.config || exit 1
 echo OK
 ';
         my %reg = ( MYDanROOT => $MYDan::PATH );
@@ -76,7 +82,7 @@ echo OK
         }
     }
 
-    my $ServerAddr = 'http://'.request->{host};
+    my $ServerAddr = request->{host};
     my $tmp = $install_script_client; $tmp =~ s/ServerAddr/$ServerAddr/g;
     
     return $tmp;

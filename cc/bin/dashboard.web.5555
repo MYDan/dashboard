@@ -9,4 +9,4 @@ PORT=$(echo $NAME|awk -F. '{print $NF}')
 
 
 cd $BASE/../../../$APPS/bin || exit;
-exec /home/work/mydan/perl/bin/twiggy ./app.pl -p $PORT
+exec $MYDanPATH/perl/bin/twiggy ./app.pl -p $PORT
