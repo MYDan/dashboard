@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+$|++;
 use Dancer;
 use dashboard;
 use api::v1::push;
