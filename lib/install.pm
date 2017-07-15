@@ -27,7 +27,7 @@ tar -zxvf $TMP -C / || exit 1
 rsync -av MYDanROOT/etc/agent/auth.tmp/ MYDanROOT/etc/agent/auth/ || exit
 rsync -av MYDanROOT/dan/bootstrap/exec.tmp/agent MYDanROOT//dan/bootstrap/exec/agent || exit
 MYDanROOT/dan/bootstrap/bin/bootstrap --install || exit 1
-sed -i "s/.*#myrole/  role: agent#myrole/" MYDanROOT/dan/.config || exit 1
+sed -i "s/.*#myrole/  role: agent #myrole/" MYDanROOT/dan/.config || exit 1
 
 sed -i "s/.*#dashboard_addr/  addr: http:\/\/ServerAddr #dashboard_addr/" MYDanROOT/dan/.config || exit 1
 #ServerAddr
@@ -71,7 +71,7 @@ TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
 wget -O $TMP http://ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
 tar -zxvf $TMP -C / || exit 1
-sed -i "s/.*#myrole/  role: client#myrole/" MYDanROOT/dan/.config || exit 1
+sed -i "s/.*#myrole/  role: client #myrole/" MYDanROOT/dan/.config || exit 1
 sed -i "s/.*#dashboard_addr/  addr: http:\/\/ServerAddr #dashboard_addr/" MYDanROOT/dan/.config || exit 1
 echo OK
 ';
