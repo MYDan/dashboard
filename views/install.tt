@@ -21,6 +21,8 @@
           curl -fsSL [% serveraddr %]/install/script/agent.sh|bash -x<br><br>
 
           注：client和agent的区别是，agent会启动agent服务和添加公钥，安装后就能被调用，client则不会<br>
+          mac系统一般情况下不用编译perl，下载安装mydan后修改mydan/dan/.config 下的配置，<br>
+          把myrole中的role改成client，把dashboard_addr地址改成dashboard的地址<br>
         </div>
       </div>
     </div>
