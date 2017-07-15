@@ -8,6 +8,7 @@ use user;
 use MYDan::Util::OptConf;
 use MYDan::Agent::Query;
 use YAML::XS;
+use Data::UUID;
 
 our $VERSION = '0.1';
 
@@ -25,6 +26,8 @@ any '/api/v1/agent/encryption' => sub {
         && eval { $query = YAML::XS::Load $yaml }
         && ref $query eq 'HASH';
 
+    my $uuid = Data::UUID->new->create_str();
+    print YAML::XS::Dump +{ uuid => $uuid, query => $query };
     my $auth = delete $query->{auth};
     return 'no auth' unless $auth && %$auth;
 
@@ -44,13 +47,16 @@ any '/api/v1/agent/encryption' => sub {
     my ( $user, $sudo, $node ) = @$query{qw( user sudo node )};
 
     my $data = &{$user::code{access}}( $user );
+    print YAML::XS::Dump +{ uuid => $uuid, access => $data };
     $query->{node} = +{ map{ $_ =>  1 }  $sudo 
         ? grep{ $data->{$_}{$sudo} }@$node : grep{ $data->{$_} }@$node };
+
 
     $query->{auth} = eval{ 
         MYDan::Agent::Auth->new( key => $agent{'auth'} )
             ->sign( YAML::XS::Dump $query );
     };
+    print YAML::XS::Dump  +{ uuid => $uuid, 'return' => $query };
     return  "sign error: $@" if $@;
     my $r =  Compress::Zlib::compress( YAML::XS::Dump $query );
     send_file( \$r, content_type => 'image/png' );
