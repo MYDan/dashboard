@@ -51,6 +51,7 @@ any '/api/v1/agent/encryption' => sub {
     print YAML::XS::Dump +{ uuid => $uuid, access => $data };
     $query->{node} = +{ map{ $_ =>  1 }  $sudo 
         ? grep{ $data->{$_}{$sudo} }@$node : grep{ $data->{$_} }@$node };
+    $query->{sudo} = $query->{user} unless $sudo;
 
 
     $query->{auth} = eval{ 
