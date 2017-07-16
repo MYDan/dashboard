@@ -32,6 +32,7 @@ any '/api/v1/agent/encryption' => sub {
     return 'no auth' unless $auth && %$auth;
 
     map{ return "no $_" unless $query->{$_} }qw( user peri node );
+    return 'user format error' unless $query->{user} =~ /^[a-zA-Z0-9\._-]+$/;
 
     eval{
         return 'auth fail' unless MYDan::Agent::Auth->new(
