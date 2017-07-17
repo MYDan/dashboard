@@ -19,7 +19,7 @@ any '/install/script/agent.sh' => sub {
     {
         $install_script_agent = 
 '#!/bin/bash
-test -e /etc/mydan.lock && exit 1;
+test -e MYDanROOT/etc/mydan.lock && exit 1;
 TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
 wget -O $TMP http://ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
@@ -66,7 +66,7 @@ any '/install/script/client.sh' => sub {
     {
         $install_script_client = 
 '#!/bin/bash
-test -e /etc/mydan.lock && exit 1;
+test -e MYDanROOT/etc/mydan.lock && exit 1;
 TMP=/tmp/mydan.install.tar.gz;
 ARCH=$(uname).$(uname -m);
 wget -O $TMP http://ServerAddr/download/agent/$ARCH/mydan.latest.tar.gz || exit 1;
