@@ -8,10 +8,18 @@ our $VERSION = '0.1';
 
 any '/download/' => sub {
     my $param = params();
-    my %download;
-    map{ push @{$download{$1}}, $2 if $_ =~ /\/([^\/]+)\/([^\/]+)$/ }glob "$RealBin/../public/download/agent/*/*";
+    my ( %download, %dl );
+    map{ $download{$1}{$2}{$3} = 1 if $_ =~ /\/([^\/]+)\/([^\/]+)\.(client|agent|tar\.gz)$/ }glob "$RealBin/../public/download/agent/*/*";
 
-    template 'download', +{ download => \%download };
+    while( my ( $arch, $data ) = each %download )
+    {
+        for my $ver ( sort keys %$data )
+        {
+            push  @{$dl{$arch}}, [ $ver, map{ $data->{$ver}{$_}||= 0 }qw( tar.gz client agent ) ];
+        }
+        
+    }
+    template 'download', +{ download => \%dl };
 };
 
 true;
