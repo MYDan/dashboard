@@ -49,8 +49,17 @@ any '/api/v1/agent/encryption' => sub {
 
     my $data = &{$user::code{access}}( $user );
     print YAML::XS::Dump +{ uuid => $uuid, access => $data };
-    $query->{node} = +{ map{ $_ =>  1 }  $sudo 
-        ? grep{ $data->{$_}{$sudo} }@$node : grep{ $data->{$_} }@$node };
+
+    if( $data->{'*'} &&  $data->{'*'}{'*'} )
+    {
+        delete $query->{node};
+    }
+    else
+    {
+        $query->{node} = +{ map{ $_ =>  1 }  $sudo 
+            ? grep{ $data->{$_}{$sudo} }@$node : grep{ $data->{$_} }@$node };
+    }
+
     $query->{sudo} = $query->{user} unless $sudo;
 
 
