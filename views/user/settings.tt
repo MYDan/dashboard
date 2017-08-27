@@ -19,7 +19,7 @@
               token是用于标识用户，请不要提供给他人。设置了token后的client端将能控制该用户机器列表中的机器。<br><br>
 
               <form action="#" method="post" >
-                  <textarea rows="9" cols="120" name="token" >[% token %]</textarea> 
+                  <textarea rows="9" cols="110" name="token" >[% token %]</textarea> 
                   <br>
                   <input type="submit">
               </form>
