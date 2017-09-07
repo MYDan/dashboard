@@ -2,8 +2,20 @@
 use strict;
 use warnings;
 
+use JSON::XS;
+use LWP::UserAgent;
+
 return sub
 {
-    return 'nobody';
+    my $sid = shift;
+    my $ua = LWP::UserAgent->new;
+
+    $ua->timeout( 2 );
+    my $res = $ua->get( "http://sso.mydan.org:8080/info?sid=$sid" );
+
+    return undef unless $res->is_success;
+
+    my $v = eval{ decode_json $res->decoded_content };
+    return $v && ref $v eq 'HASH' ? $v->{user} : undef;
 };
 
