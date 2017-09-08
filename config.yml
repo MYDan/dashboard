@@ -29,7 +29,7 @@ engines:
 # For session support enable the following line and see Dancer::Session
 # session: "YAML"
 
-ssocallback: 'http://sso.mydan.org:8080/?callback='
+ssocallback: 'http://sso.mydan.org:8080/?ref='
 cookiekey: 'sid'
 
 #
