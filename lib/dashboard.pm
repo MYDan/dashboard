@@ -31,7 +31,7 @@ sub execute
 }
 
 get '/' => sub {
-    template 'index';
+    template 'index', +{ logout => config->{ssologout} };
 };
 
 any '/health' => sub {

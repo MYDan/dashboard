@@ -30,6 +30,7 @@ engines:
 # session: "YAML"
 
 ssocallback: 'http://sso.mydan.org:8080/?ref='
+ssologout: 'http://sso.mydan.org:8080/logout'
 cookiekey: 'sid'
 
 #
