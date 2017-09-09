@@ -57,7 +57,7 @@ any '/api/v1/agent/encryption' => sub {
     else
     {
         $query->{node} = +{ map{ $_ =>  1 }  $sudo 
-            ? grep{ $data->{$_}{$sudo} }@$node : grep{ $data->{$_} }@$node };
+            ? grep{ $data->{$_}{$sudo} || $data->{$_}{'*'} }@$node : grep{ $data->{$_} }@$node };
     }
 
     $query->{sudo} = $query->{user} unless $sudo;
