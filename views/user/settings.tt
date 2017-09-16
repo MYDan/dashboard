@@ -25,7 +25,18 @@
               </form>
 
             </li>
+            <li>
+              <h2>PASS</h2>
 
+              <p>
+              pass用于mydan命令行的登陆<br>
+
+              <form action="#" method="post" >
+                  <input name="pass" value="[% pass %]"></input> 
+                  <input type="submit">
+              </form>
+
+            </li>
           </ol>
         </div>
       </div>

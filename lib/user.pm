@@ -33,14 +33,21 @@ sub maketoken
 any '/user/settings/' => sub {
     my $param = params();
     return unless my $username = get_username();
-    my $p = "$RealBin/../../etc/dashboard/auth";
-    system "mkdir -p '$p'" unless -e $p;
-    die "tie auth $username fail" unless tie my @token, 'Tie::File', "$p/$username.pub";
+
+    my ( $t, $p ) = map{ "$RealBin/../../etc/dashboard/$_" }qw( auth pass );
+    map{ system "mkdir -p '$_'" unless -e $_; }( $t, $p );
+
+    die "tie auth $username fail" unless tie my @token, 'Tie::File', "$t/$username.pub";
+    die "tie pass $username fail" unless tie my @pass, 'Tie::File', "$p/$username";
 
     @token = ( $param->{token} ) if $param->{token};
+    @pass  = ( $param->{pass} )  if $param->{pass};
 
-    my $token = join "\n", @token;
-    template 'user/settings', +{ username => $username, token => $token };
+    template 'user/settings', +{ 
+        username => $username,
+        token => join( "\n", @token), 
+        pass => join( "\n",@pass )
+    };
 };
 
 any '/user/myhost/' => sub {
